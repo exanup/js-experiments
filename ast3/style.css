@@ -18,10 +18,26 @@ body {
   clear: both;
 }
 
+.center {
+  /* background-color: lightgreen; */
+  display: table;
+  width: 100vw;
+  height: 100vh;
+}
+
+.v-align {
+  /* background-color: lightcoral; */
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+}
+
 .slider-container {
   /* background-color: lightblue; */
+  display: inline-block;
+  /* removes extra space below the element because of inline-block */
+  vertical-align: top;
   width: 1000px;
-  margin: 0 auto;
 }
 
 .slider-wrapper {
