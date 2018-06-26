@@ -14,6 +14,8 @@ var sliderPage = function () {
   var delay = 1;
   var slideStep = 10;
 
+  var intervalSet = false;
+
   nextBtn.addEventListener('click', function (e) {
     e.preventDefault();
 
@@ -22,34 +24,47 @@ var sliderPage = function () {
     }
 
     var i = 0;
-    var slideLeftIntervalRef = setInterval(function () {
-      if (i < imgWidth) {
-        i += slideStep;
-        currentMargin = currentMargin - slideStep;
-        slider.style.marginLeft = currentMargin + 'px';
-      } else {
-        clearInterval(slideLeftIntervalRef);
-      }
-    }, delay);
+    if (!intervalSet) {
+      var slideLeftIntervalRef = setInterval(function () {
+        intervalSet = true;
+
+        if (i < imgWidth) {
+          i += slideStep;
+          currentMargin = currentMargin - slideStep;
+          slider.style.marginLeft = currentMargin + 'px';
+        } else {
+          clearInterval(slideLeftIntervalRef);
+          intervalSet = false;
+        }
+      }, delay);
+    }
   });
 
-
-  prevBtn.addEventListener('click', function (e) {
+  var fun1 = function (e) {
     e.preventDefault();
 
     if (currentMargin >= maxMargin) {
-      currentMargin = -3200;
+      currentMargin = -imgCount * imgWidth;
     }
 
     var i = 0;
-    var slideRightIntervalRef = setInterval(function () {
-      if (i < imgWidth) {
-        i += slideStep;
-        currentMargin = currentMargin + slideStep;
-        slider.style.marginLeft = currentMargin + 'px';
-      } else {
-        clearInterval(slideRightIntervalRef);
-      }
-    }, delay);
-  });
+    if (!intervalSet) {
+      var slideRightIntervalRef = setInterval(function () {
+        intervalSet = true;
+
+        if (i < imgWidth) {
+          i += slideStep;
+          currentMargin = currentMargin + slideStep;
+          slider.style.marginLeft = currentMargin + 'px';
+        } else {
+          clearInterval(slideRightIntervalRef);
+          intervalSet = false;
+        }
+      }, delay);
+    }
+  };
+
+  prevBtn.addEventListener('click', fun1);
+
 }();
+
