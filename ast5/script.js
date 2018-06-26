@@ -108,30 +108,35 @@ function checkCollisionWithEachOther(ball1, ball2) {
   var y2max = ball2.y + ball2.height;
 
   var collided = true;
-  var collisionDirn = '';
 
-  if (x1max < x2min || x1min > x2max) {
+  var dxl2r = x1max - x2min;
+  var dxr2l = x1min - x2max;
+  var dyl2r = y1max - y2min;
+  var dyr2l = y1min - y2max;
+
+  if (dxl2r < 0 || dxr2l > 0) {
     collided = false;
-  } else {
-    collisionDirn += 'x';
   }
-
-  if (y1max < y2min || y1min > y2max) {
+  if (dyl2r < 0 || dyr2l > 0) {
     collided = false;
-  } else {
-    collisionDirn += 'y';
   }
-
-  console.log(collided);
-
+  // console.log(collided);
   if (collided === true) {
-    if (collisionDirn.indexOf('x') != -1) {
-      ball1.dx = -ball1.dx;
-      ball2.dx = -ball2.dx;
+    console.log(dxl2r, dxr2l, dyl2r, dyr2l);
+    var ddx = ball1.dx - ball2.dx;
+    var ddy = ball1.dy - ball2.dy;
+
+    console.log(ddx, ddy);
+
+    if (ddx === 0 || ddx === 2 || ddx === -2) { // collision at direction of dy
+      var dyTemp = ball1.dy;
+      ball1.dy = ball2.dy;
+      ball2.dy = dyTemp;
     }
-    if (collisionDirn.indexOf('y') != -1) {
-      ball1.dy = -ball1.dy;
-      ball2.dy = -ball2.dy;
+    if (ddy === 0 || ddy === 2 || ddy === -2) { // collision at direction of dx
+      var dxTemp = ball1.dx;
+      ball1.dx = ball2.dx;
+      ball2.dx = dxTemp;
     }
   }
 }
