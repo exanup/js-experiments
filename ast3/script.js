@@ -1,8 +1,5 @@
 var sliderPage = function () {
-  var prevBtn = document.getElementById('btn-prev');
-  var nextBtn = document.getElementById('btn-next');
-
-  var slider = document.getElementById('slider');
+  var $slider = document.getElementById('slider');
 
   var imgWidth = 800;
   var imgCount = 4;
@@ -14,42 +11,44 @@ var sliderPage = function () {
   var delay = 1;
   var slideStep = 10;
 
-  nextBtn.addEventListener('click', function (e) {
-    e.preventDefault();
+  var intervalSet = false;
 
-    if (currentMargin <= minMargin) {
-      currentMargin = imgWidth;
+  var sliderClickHandler = function (e) {
+    e.preventDefault();
+    $target = e.target;
+
+    if ($target.id === 'btn-prev') {
+      if (currentMargin >= maxMargin) {
+        currentMargin = -imgCount * imgWidth;
+      }
+    } else {
+      if (currentMargin <= minMargin) {
+        currentMargin = imgWidth;
+      }
     }
 
     var i = 0;
-    var slideLeftIntervalRef = setInterval(function () {
-      if (i < imgWidth) {
-        i += slideStep;
-        currentMargin = currentMargin - slideStep;
-        slider.style.marginLeft = currentMargin + 'px';
-      } else {
-        clearInterval(slideLeftIntervalRef);
-      }
-    }, delay);
-  });
+    if (!intervalSet) {
+      var slideIntervalRef = setInterval(function () {
+        intervalSet = true;
 
-
-  prevBtn.addEventListener('click', function (e) {
-    e.preventDefault();
-
-    if (currentMargin >= maxMargin) {
-      currentMargin = -3200;
+        if (i < imgWidth) {
+          i += slideStep;
+          var sign = ($target.id === 'btn-prev' ? 1 : -1);
+          currentMargin = currentMargin + sign * slideStep;
+          $slider.style.marginLeft = currentMargin + 'px';
+        } else {
+          clearInterval(slideIntervalRef);
+          intervalSet = false;
+        }
+      }, delay);
     }
+  };
 
-    var i = 0;
-    var slideRightIntervalRef = setInterval(function () {
-      if (i < imgWidth) {
-        i += slideStep;
-        currentMargin = currentMargin + slideStep;
-        slider.style.marginLeft = currentMargin + 'px';
-      } else {
-        clearInterval(slideRightIntervalRef);
-      }
-    }, delay);
-  });
+  var prevBtn = document.getElementById('btn-prev');
+  var nextBtn = document.getElementById('btn-next');
+
+  prevBtn.addEventListener('click', sliderClickHandler);
+  nextBtn.addEventListener('click', sliderClickHandler);
+
 }();
