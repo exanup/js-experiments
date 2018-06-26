@@ -1,0 +1,42 @@
+.clearfix {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+#colorfulBox {
+  display: none;
+  width: 200px;
+  height: 200px;
+  margin: 50px auto;
+  text-align: center;
+  border: 1px solid blue;
+}
+
+#graph {
+  position: relative;
+  display: none;
+  float: left;
+  width: 600px;
+  height: 600px;
+  outline: 1px solid blue;
+  padding: 10px;
+}
+
+#graph > * {
+  position: absolute;
+  background-color: green;
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+#graph > *:hover {
+  background-color: red;
+}
+
+#deleted-list {
+  float: left;
+  width: auto;
+}
