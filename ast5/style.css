@@ -1,15 +1,17 @@
 .box {
+  outline: 1px solid goldenrod;
+  background-color: lightyellow;
   position: relative;
-  outline: 1px solid blue;
-  width: 800px;
-  height: 500px;
-  margin: 30 auto;
+  width: 600px;
+  height: 400px;
+  margin: 30px auto;
 }
 
 .ball {
+  outline: 2px dotted lime;
+  background-color: lightcoral;
   position: absolute;
-  background-color: red;
-  width: 20px;
-  height: 20px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
 }
