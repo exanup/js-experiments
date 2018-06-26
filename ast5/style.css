@@ -1,0 +1,15 @@
+.box {
+  position: relative;
+  outline: 1px solid blue;
+  width: 800px;
+  height: 500px;
+  margin: 30 auto;
+}
+
+.ball {
+  position: absolute;
+  background-color: red;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+}
