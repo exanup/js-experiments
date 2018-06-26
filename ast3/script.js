@@ -15,7 +15,7 @@ var sliderPage = function () {
 
   var sliderClickHandler = function (e) {
     e.preventDefault();
-    $target = e.target;
+    $target = this;
 
     if ($target.id === 'btn-prev') {
       if (currentMargin >= maxMargin) {
