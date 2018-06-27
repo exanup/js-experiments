@@ -8,4 +8,5 @@ GitHub Pages - [https://exanup.github.io/js-experiments/](https://exanup.github.
 [ast1](https://exanup.github.io/js-experiments/ast1/)
 [ast2](https://exanup.github.io/js-experiments/ast2/)
 [ast3](https://exanup.github.io/js-experiments/ast3/)
+[ast4](https://exanup.github.io/js-experiments/ast4/)
 [ast5](https://exanup.github.io/js-experiments/ast5/)
