@@ -51,9 +51,10 @@ setInterval(function () {
   renderBall(ballBlue);
 }, delay);
 // end of main loop
+setTimeout(startAcceptingKeyPresses, delay);
 
 function getRandom(min, max) {
-  return parseInt(Math.random() * (max - min) + min );
+  return parseInt(Math.random() * (max - min) + min);
 }
 
 function signPosOrNeg() {
@@ -139,4 +140,25 @@ function checkCollisionWithEachOther(ball1, ball2) {
       ball2.dx = dxTemp;
     }
   }
+}
+
+function startAcceptingKeyPresses() {
+  document.addEventListener('keydown', function (e) {
+    console.log(e);
+
+    switch (e.key) {
+      case "ArrowDown":
+        ballBlue.dy = 1;
+        break;
+      case "ArrowUp":
+        ballBlue.dy = -1;
+        break;
+      case "ArrowRight":
+        ballBlue.dx = 1;
+        break;
+      case "ArrowLeft":
+        ballBlue.dx = -1;
+        break;
+    }
+  });
 }
