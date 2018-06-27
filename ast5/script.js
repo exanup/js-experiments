@@ -5,6 +5,8 @@ var container = {
   height: $container.clientHeight
 };
 
+var velocityScale = 1;
+
 var $rBall = document.createElement('div');
 $rBall.className = 'ball';
 container.$el.appendChild($rBall);
@@ -14,8 +16,8 @@ var ballRed = {
   color: 'red',
   width: $rBall.clientWidth,
   height: $rBall.clientHeight,
-  dx: signPosOrNeg(),
-  dy: signPosOrNeg()
+  dx: velocityScale * signPosOrNeg(),
+  dy: velocityScale * signPosOrNeg()
 };
 ballRed.x = getRandom(0, container.width - ballRed.width);
 ballRed.y = getRandom(0, container.height - ballRed.height);
@@ -31,22 +33,22 @@ var ballBlue = {
   color: 'blue',
   width: $bBall.clientWidth,
   height: $bBall.clientHeight,
-  dx: signPosOrNeg(),
-  dy: signPosOrNeg()
+  dx: velocityScale * signPosOrNeg(),
+  dy: velocityScale * signPosOrNeg()
 }
 ballBlue.x = getRandom(0, container.width - ballBlue.width);
 ballBlue.y = getRandom(0, container.height - ballBlue.height);
 ballBlue.$el.style.backgroundColor = ballBlue.color;
 renderBall(ballBlue);
 
-var delay = 1;
+var delay = 10;
 // starting main loop
 setInterval(function () {
-  moveBall(ballRed);
-  moveBall(ballBlue);
   checkBoundaryCollision(ballRed);
   checkBoundaryCollision(ballBlue);
   checkCollisionWithEachOther(ballRed, ballBlue);
+  moveBall(ballRed);
+  moveBall(ballBlue);
   renderBall(ballRed);
   renderBall(ballBlue);
 }, delay);
