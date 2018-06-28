@@ -1,59 +1,63 @@
-$container = document.getElementById('box');
-var container = {
-  $el: $container,
-  width: $container.clientWidth,
-  height: $container.clientHeight
-};
+function main() {
+  $container = document.getElementById('box');
+  var container = {
+    $el: $container,
+    width: $container.clientWidth,
+    height: $container.clientHeight
+  };
 
-var velocityScale = 1;
+  var velocityScale = {
+    x: 1,
+    y: 1
+  };
+  var delay = 1;
 
-var $rBall = document.createElement('div');
-$rBall.className = 'ball';
-container.$el.appendChild($rBall);
+  var balls = [];
+  var countBalls = 100;
+  for (var i = 0; i < countBalls; i++) {
+    var ball = createNewBall(container, velocityScale);
+    balls.push(ball);
+  }
 
-var ballRed = {
-  $el: $rBall,
-  color: 'red',
-  width: $rBall.clientWidth,
-  height: $rBall.clientHeight,
-  dx: velocityScale * signPosOrNeg(),
-  dy: velocityScale * signPosOrNeg()
-};
-ballRed.x = getRandom(0, container.width - ballRed.width);
-ballRed.y = getRandom(0, container.height - ballRed.height);
-ballRed.$el.style.backgroundColor = ballRed.color;
-renderBall(ballRed);
-
-var $bBall = document.createElement('div');
-$bBall.className = 'ball';
-container.$el.appendChild($bBall);
-
-var ballBlue = {
-  $el: $bBall,
-  color: 'blue',
-  width: $bBall.clientWidth,
-  height: $bBall.clientHeight,
-  dx: velocityScale * signPosOrNeg(),
-  dy: velocityScale * signPosOrNeg()
+  // starting main loop
+  var mainLoopRef = setInterval(function () {
+    checkBoundaryCollisionForAllBalls(container, balls);
+    checkInterBallCollision(balls);
+    moveAllBalls(balls);
+    renderAllBalls(balls);
+  }, delay);
+  // end of main loop
+  return mainLoopRef;
 }
-ballBlue.x = getRandom(0, container.width - ballBlue.width);
-ballBlue.y = getRandom(0, container.height - ballBlue.height);
-ballBlue.$el.style.backgroundColor = ballBlue.color;
-renderBall(ballBlue);
 
-var delay = 10;
-// starting main loop
-setInterval(function () {
-  checkBoundaryCollision(ballRed);
-  checkBoundaryCollision(ballBlue);
-  checkCollisionWithEachOther(ballRed, ballBlue);
-  moveBall(ballRed);
-  moveBall(ballBlue);
-  renderBall(ballRed);
-  renderBall(ballBlue);
-}, delay);
-// end of main loop
-setTimeout(startAcceptingKeyPresses, delay);
+function createNewBall(container, velocityScale) {
+  var $ball = document.createElement('div');
+  $ball.className = 'ball';
+  container.$el.appendChild($ball);
+
+  var ball = {
+    $el: $ball,
+    color: generateRandomColor(),
+    width: $ball.clientWidth,
+    height: $ball.clientHeight,
+    dx: velocityScale.x * signPosOrNeg(),
+    dy: velocityScale.y * signPosOrNeg()
+  };
+  ball.x = getRandom(0, container.width - ball.width);
+  ball.y = getRandom(0, container.height - ball.height);
+  ball.$el.style.backgroundColor = ball.color;
+  renderBall(ball);
+
+  return ball;
+}
+
+function generateRandomColor() {
+  var r = parseInt(Math.random() * 128);
+  var g = parseInt(Math.random() * 128);
+  var b = parseInt(Math.random() * 128);
+  var color = `rgb(${r}, ${g}, ${b})`;
+  return color;
+}
 
 function getRandom(min, max) {
   return parseInt(Math.random() * (max - min) + min);
@@ -63,9 +67,21 @@ function signPosOrNeg() {
   return (Math.random() > 0.5 ? 1 : -1);
 }
 
+function moveAllBalls(balls) {
+  balls.forEach(function (ball) {
+    moveBall(ball);
+  });
+}
+
 function moveBall(ball) {
   ball.x = ball.x + ball.dx;
   ball.y = ball.y + ball.dy;
+}
+
+function renderAllBalls(balls) {
+  balls.forEach(function (ball) {
+    renderBall(ball);
+  });
 }
 
 function renderBall(ball) {
@@ -73,42 +89,67 @@ function renderBall(ball) {
   ball.$el.style.top = ball.y + 'px';
 }
 
-function checkBoundaryCollision(ball) {
-  if (topCollided(ball) || bottomCollided(ball)) {
+function checkBoundaryCollisionForAllBalls(container, balls) {
+  balls.forEach(function (ball) {
+    checkBoundaryCollision(container, ball);
+  });
+}
+
+function checkBoundaryCollision(container, ball) {
+  if (topCollided(container, ball) || bottomCollided(container, ball)) {
+    // console.log('collided with top or bottom')
     ball.dy = -ball.dy;
   }
 
-  if (leftCollided(ball) || rightCollided(ball)) {
+  if (leftCollided(container, ball) || rightCollided(container, ball)) {
+    // console.log('collided with left or right')
     ball.dx = -ball.dx;
   }
 }
 
-function topCollided(ball) {
+function topCollided(container, ball) {
+  // console.log('collided with top');
   return (ball.y <= 0);
 }
 
-function leftCollided(ball) {
+function leftCollided(container, ball) {
+  // console.log('collided with left');
   return (ball.x <= 0);
 }
 
-function bottomCollided(ball) {
-  return (ball.y + ball.height >= container.height);
+function bottomCollided(container, ball) {
+  // console.log('collided with bottom');
+  var check = (ball.y + ball.height >= container.height);
+  // console.log(ball, 'bottom collided', check)
+  return check;
 }
 
-function rightCollided(ball) {
+function rightCollided(container, ball) {
+  // console.log('collided with right');
   return (ball.x + ball.width >= container.width);
 }
 
-function checkCollisionWithEachOther(ball1, ball2) {
-  var x1min = ball1.x;
-  var x1max = ball1.x + ball1.width;
-  var y1min = ball1.y;
-  var y1max = ball1.y + ball1.height;
+function checkInterBallCollision(balls) {
+  var ballCount = balls.length;
+  for (var i = 0; i < ballCount; i++) {
+    var ballOne = balls[i];
+    for (var j = i + 1; j < ballCount; j++) {
+      var ballTwo = balls[j];
+      checkCollisionWithEachOther(ballOne, ballTwo);
+    }
+  }
+}
 
-  var x2min = ball2.x;
-  var x2max = ball2.x + ball2.width;
-  var y2min = ball2.y;
-  var y2max = ball2.y + ball2.height;
+function checkCollisionWithEachOther(ballOne, ballTwo) {
+  var x1min = ballOne.x;
+  var x1max = ballOne.x + ballOne.width;
+  var y1min = ballOne.y;
+  var y1max = ballOne.y + ballOne.height;
+
+  var x2min = ballTwo.x;
+  var x2max = ballTwo.x + ballTwo.width;
+  var y2min = ballTwo.y;
+  var y2max = ballTwo.y + ballTwo.height;
 
   var collided = true;
 
@@ -125,42 +166,35 @@ function checkCollisionWithEachOther(ball1, ball2) {
   }
   // console.log(collided);
   if (collided === true) {
-    console.log(dxl2r, dxr2l, dyl2r, dyr2l);
-    var ddx = ball1.dx - ball2.dx;
-    var ddy = ball1.dy - ball2.dy;
+    // console.log(dxl2r, dxr2l, dyl2r, dyr2l);
+    var ddx = ballOne.dx - ballTwo.dx;
+    var ddy = ballOne.dy - ballTwo.dy;
 
-    console.log(ddx, ddy);
+    // console.log(ddx, ddy);
 
     if (ddx === 0 || ddx === 2 || ddx === -2) { // collision at direction of dy
-      var dyTemp = ball1.dy;
-      ball1.dy = ball2.dy;
-      ball2.dy = dyTemp;
+      var dyTemp = ballOne.dy;
+      ballOne.dy = ballTwo.dy;
+      ballTwo.dy = dyTemp;
     }
     if (ddy === 0 || ddy === 2 || ddy === -2) { // collision at direction of dx
-      var dxTemp = ball1.dx;
-      ball1.dx = ball2.dx;
-      ball2.dx = dxTemp;
+      var dxTemp = ballOne.dx;
+      ballOne.dx = ballTwo.dx;
+      ballTwo.dx = dxTemp;
     }
   }
 }
 
-function startAcceptingKeyPresses() {
-  document.addEventListener('keydown', function (e) {
-    console.log(e);
+var mainLoopRef = main();
+var playing = true;
 
-    switch (e.key) {
-      case "ArrowDown":
-        ballBlue.dy = 1;
-        break;
-      case "ArrowUp":
-        ballBlue.dy = -1;
-        break;
-      case "ArrowRight":
-        ballBlue.dx = 1;
-        break;
-      case "ArrowLeft":
-        ballBlue.dx = -1;
-        break;
-    }
-  });
-}
+document.addEventListener('keydown', function (e) {
+  // console.log(e.key);
+  if (playing && e.key === 'Escape') {
+    console.group();
+    // console.log('Escape pressed. Stopping animation.');
+    clearInterval(mainLoopRef);
+    console.groupEnd();
+    playing = false;
+  }
+});

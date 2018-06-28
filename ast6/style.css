@@ -2,16 +2,16 @@
   /* outline: 1px solid goldenrod; */
   background-color: lightgray;
   position: relative;
-  width: 550px;
-  height: 550px;
-  margin: 30px auto;
+  width: 800px;
+  height: 600px;
+  margin: 0 auto;
 }
 
 .ball {
   /* outline: 2px dotted lime; */
   background-color: lightcoral;
   position: absolute;
-  width: 100px;
-  height: 100px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
 }
