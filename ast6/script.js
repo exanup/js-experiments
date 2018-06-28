@@ -10,7 +10,7 @@ function main() {
     x: 1,
     y: 1
   };
-  var delay = 1;
+  var delay = 100;
 
   var balls = [];
   var countBalls = 100;
@@ -48,14 +48,19 @@ function createNewBall(container, velocityScale) {
   ball.$el.style.backgroundColor = ball.color;
   renderBall(ball);
 
+  ball.$el.addEventListener("mousedown", function(e) {
+    console.log('remvoed', ball.$el);
+    container.$el.removeChild(ball.$el);
+  });
+
   return ball;
 }
 
 function generateRandomColor() {
-  var r = parseInt(Math.random() * 128);
-  var g = parseInt(Math.random() * 128);
-  var b = parseInt(Math.random() * 128);
-  var color = `rgb(${r}, ${g}, ${b})`;
+  var r = parseInt(Math.random() * 200);
+  var g = parseInt(Math.random() * 200);
+  var b = parseInt(Math.random() * 200);
+  var color = 'rgb(' + r + ', ' + g + ', ' + b + ')';
   return color;
 }
 
