@@ -4,7 +4,7 @@ var animation = new Animation({
   delay: 25,
   particleContainer: {
     $el: $container,
-    particlesCount: 150,
+    particlesCount: 3,
   },
 });
 

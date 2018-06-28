@@ -28,8 +28,9 @@ body {
 
 .particle {
   /* outline: 1px dotted red; */
+  border-radius: 50%;
   position: absolute;
   height: 25px;
   width: 25px;
-  border-radius: 50%;
+  cursor: pointer;
 }

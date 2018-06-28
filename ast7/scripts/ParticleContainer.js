@@ -51,5 +51,13 @@ function ParticleContainer(props) {
     });
   }
 
+  self.checkInterParticleCollision = function() {
+    for (var i = 0; i < self.particlesCount; i++) {
+      for (var j = i; j < self.particlesCount; j++) {
+        self.particles[i].checkCollisionWith(self.particles[j]);
+      }
+    }
+  }
+
   self.__init();
 }

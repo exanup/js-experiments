@@ -20,6 +20,7 @@ function Animation(props) {
       isRunning = true;
       self.mainLoopRef = setInterval(function () {
         self.particleContainer.checkCollisionWithAllParticles();
+        self.particleContainer.checkInterParticleCollision();
         self.particleContainer.moveAllParticles();
         self.particleContainer.renderAllParticles();
       }, self.delay);
