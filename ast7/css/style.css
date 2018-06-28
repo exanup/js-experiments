@@ -1,0 +1,20 @@
+body {
+  padding: 0;
+  margin: 10px;
+  background-color: darkslategray;
+}
+
+.container {
+  position: relative;
+  width: 400px;
+  height: 300px;
+  margin: 0 auto;
+  background: white;
+}
+
+.particle {
+  position: absolute;
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+}
