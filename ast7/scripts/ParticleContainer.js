@@ -11,16 +11,25 @@ function ParticleContainer(props) {
       var particle = new Particle({
         parent: self,
       });
+      self.particles.push(particle);
     }
+
+    // console.log(self.particles);
   };
 
   self.checkIfOverlapsWithOtherParticles = function(pos) {
     // console.log('we are checking if it overlaps with other particles');
-    // console.log(pos, self.particlesCount);
-
-    for (var i = 0; i < self.particlesCount; i++) {
-
+    // console.group('inside checking collision')
+    var currentLoadedParticlesCount = self.particles.length;
+    for (var i = 0; i < currentLoadedParticlesCount; i++) {
+      // console.log(self.particles[i]);
+      // console.log(self.particles[i].isOverlappedWith(pos));
+      if (self.particles[i].isOverlappedWith(pos)) {
+        return true;
+      }
     }
+    // console.log('Total overlaps: ', countOverlaps);
+    // console.groupEnd();
 
     return false;
   }
