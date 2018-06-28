@@ -1,10 +1,10 @@
 $container = document.getElementById('container');
 
 var animation = new Animation({
-  delay: 25,
+  delay: 1,
   particleContainer: {
     $el: $container,
-    particlesCount: 3,
+    particlesCount: 150,
   },
 });
 

@@ -120,16 +120,42 @@ function Particle(props) {
   }
 
   self.checkCollisionWithBoundary = function () {
-    if (self.x <= 0 || self.x + self.width >= self.parent.width) {
-      self.dx = -self.dx;
+    if (self.x < 0) {
+      self.x = 0;
+      self.dx = 1;
     }
-    if (self.y <= 0 || self.y + self.height >= self.parent.height) {
-      self.dy = -self.dy;
+    if (self.x + self.width > self.parent.width) {
+      self.x = self.parent.width - self.width;
+      self.dx = -1;
+    }
+    if (self.y < 0) {
+      self.y = 0;
+      self.dy = 1;
+    }
+    if (self.y + self.height > self.parent.height) {
+      self.y = self.parent.height - self.height;
+      self.dy = -1;
     }
   }
 
-  self.checkCollisionWith = function(particle) {
-    // if (self.)
+  self.checkCollisionWith = function (particle) {
+    if (self.isOverlappedWith(particle)) {
+      var tempDx = self.dx;
+      self.dx = particle.dx;
+      particle.dx = tempDx;
+
+      var tempDy = self.dy;
+      self.dy = particle.dy;
+      particle.dy = tempDy;
+
+      // particle.x = self.x - self.width - 1;
+      // particle.x = self.y - self.height - 1;
+    }
+
+    // if ((x1max >= x2min && x1min <= x2max) && (y1max >= y2min && y1min <= y2max)) {
+    //   return true;
+    // }
+
   }
 
   self.__init();
