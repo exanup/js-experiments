@@ -13,11 +13,10 @@ function ParticleContainer(props) {
       });
       self.particles.push(particle);
     }
-
     // console.log(self.particles);
   };
 
-  self.checkIfOverlapsWithOtherParticles = function(pos) {
+  self.checkIfOverlapsWithOtherParticles = function (pos) {
     // console.log('we are checking if it overlaps with other particles');
     // console.group('inside checking collision')
     var currentLoadedParticlesCount = self.particles.length;
@@ -32,6 +31,24 @@ function ParticleContainer(props) {
     // console.groupEnd();
 
     return false;
+  }
+
+  self.checkCollisionWithAllParticles = function () {
+    self.particles.forEach(function (particle) {
+      particle.checkCollisionWithBoundary();
+    });
+  }
+
+  self.moveAllParticles = function () {
+    self.particles.forEach(function (particle) {
+      particle.move();
+    });
+  }
+
+  self.renderAllParticles = function () {
+    self.particles.forEach(function (particle) {
+      particle.render();
+    });
   }
 
   self.__init();

@@ -1,13 +1,27 @@
 body {
   padding: 0;
   margin: 10px;
-  background-color: darkslategray;
+  background-color: white;
+}
+
+.message {
+  width: 610px;
+  text-align: center;
+  line-height: 55px;
+  margin: 10px auto;
+  background-color: hsl(140deg, 100%, 85%);
+  color: black;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-size: 1.5rem;
+  border-radius: 10px;
 }
 
 .container {
+  border: 5px solid lightcoral;
+  border-radius: 10px;
   position: relative;
-  width: 1300px;
-  height: 100vh;
+  width: 600px;
+  height: 400px;
   margin: 0 auto;
   background: white;
 }
@@ -15,7 +29,7 @@ body {
 .particle {
   /* outline: 1px dotted red; */
   position: absolute;
-  height: 20px;
-  width: 20px;
+  height: 25px;
+  width: 25px;
   border-radius: 50%;
 }

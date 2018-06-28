@@ -3,12 +3,12 @@ function Particle(props) {
 
   self.__init = function () {
     self.parent = (typeof props.parent !== 'undefined' ? props.parent : null);
-    self.bgcolor = (typeof props.color === 'string' ? props.color : self.getRandomColor());
+    self.bgcolor = (typeof props.color === 'string' ? props.color : self.getRandomRgb());
 
     self.alloc();
 
-    self.dx = (typeof props.dx === 'number' ? props.dx : 1);
-    self.dy = (typeof props.dy === 'number' ? props.dy : 1);
+    self.dx = (typeof props.dx === 'number' ? props.dx : (Math.random() > 0.5 ? -1 : 1));
+    self.dy = (typeof props.dy === 'number' ? props.dy : (Math.random() > 0.5 ? -1 : 1));
 
     self.height = self.$el.clientHeight || 10;
     self.width = self.$el.clientWidth || 10;
@@ -54,11 +54,10 @@ function Particle(props) {
       overlapsWithOtherParticles = self.parent.checkIfOverlapsWithOtherParticles(pos);
 
       countOverlaps++;
-      if (countOverlaps > maxCountOverLaps) {
-        console.log('Too much overlaps; no more space for more elements!');
-        break;
+      if (countOverlaps >= maxCountOverLaps) {
+        console.log('Cannot find non-overlapping space in ' + maxCountOverLaps + ' attempts.');
       }
-    } while (overlapsWithOtherParticles);
+    } while (overlapsWithOtherParticles && countOverlaps < maxCountOverLaps);
     return pos;
   }
 
@@ -77,17 +76,25 @@ function Particle(props) {
     return rnd;
   }
 
-  self.getRandomColor = function() {
-    var maxScale = 128;
+  self.getRandomRgb = function () {
+    var maxScale = 190;
     var r = parseInt(Math.random() * maxScale);
     var g = parseInt(Math.random() * maxScale);
     var b = parseInt(Math.random() * maxScale);
-    // var color = `rgb(${r}, ${g}, ${b}`;;
+    // var color = `rgb(${r}, ${g}, ${b}`;
     var color = 'rgb(' + r + ', ' + g + ', ' + b + ')';
     return color;
   }
 
-  self.isOverlappedWith = function(particle) {
+  self.getRandomHsl = function () {
+    var h = parseInt(Math.random() * 360);
+    var s = parseInt(Math.random() * 100) + '%';
+    var l = parseInt(Math.random() * 70) + '%';
+    var hsl = 'hsl(' + h + ', ' + s + ', ' + l + ')';
+    return hsl;
+  }
+
+  self.isOverlappedWith = function (particle) {
     var x1min = self.x;
     var x1max = self.x + self.width;
     var y1min = self.y;
@@ -112,6 +119,18 @@ function Particle(props) {
     return true;
   }
 
+  self.checkCollisionWithBoundary = function () {
+    if (self.x <= 0 || self.x + self.width >= self.parent.width) {
+      self.dx = -self.dx;
+    }
+    if (self.y <= 0 || self.y + self.height >= self.parent.height) {
+      self.dy = -self.dy;
+    }
+  }
+
+  self.checkCollisionWith(particle) {
+    if (self.)
+  }
+
   self.__init();
 }
-
