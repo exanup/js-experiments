@@ -128,8 +128,8 @@ function Particle(props) {
     }
   }
 
-  self.checkCollisionWith(particle) {
-    if (self.)
+  self.checkCollisionWith = function(particle) {
+    // if (self.)
   }
 
   self.__init();
