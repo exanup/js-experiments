@@ -1,43 +1,42 @@
+/* jshint browser: true */
+"use strict";
+
 function Animation(props) {
   var self = this;
-
   var isRunning = false;
+  var delay = (typeof props.delay === 'number' ? props.delay : 100);
+  var particleContainer = null;
+  var mainLoopRef = null;
 
-  self.delay = (typeof props.delay === 'number' ? props.delay : 100);
-  self.particleContainer = null;
-  self.mainLoopRef = null;
-
-  self.__init = function () {
-    self.particleContainer = new ParticleContainer({
-      $el: props.particleContainer.$el,
-      particlesCount: props.particleContainer.particlesCount,
-    });
+  var __init = function () {
+    particleContainer = new ParticleContainer(props.particleContainer);
   };
 
   self.start = function () {
     if (!isRunning) {
       console.log('Starting animation...');
       isRunning = true;
-      self.mainLoopRef = setInterval(function () {
-        self.particleContainer.moveAllParticles();
-        self.particleContainer.checkCollisionWithAllParticles();
-        self.particleContainer.renderAllParticles();
-        self.particleContainer.checkInterParticleCollision();
-      }, self.delay);
+      mainLoopRef = setInterval(function () {
+        particleContainer.moveAllParticles();
+        particleContainer.checkCollisionWithAllParticles();
+        particleContainer.renderAllParticles();
+        particleContainer.checkInterParticleCollision();
+      }, delay);
     }
+
   };
 
   self.pause = function () {
     if (isRunning) {
-      clearInterval(self.mainLoopRef);
+      clearInterval(mainLoopRef);
       isRunning = false;
       console.log('Paused!');
     }
-  }
+  };
 
   self.resume = function () {
     self.start();
-  }
+  };
 
-  self.__init();
+  __init();
 }

@@ -1,12 +1,23 @@
+/* jshint browser: true */
+"use strict";
+
 function Particle(props) {
   var self = this;
-  var velocityScale = null;
+  var velocityScale;
+  var backgroundColor;
+  self.height = props.height || 40;
+  self.width = props.width || 40;
+  self.x = undefined;
+  self.y = undefined;
+  self.dx = undefined;
+  self.dy = undefined;
 
-  self.__init = function () {
-    self.parent = (typeof props.parent !== 'undefined' ? props.parent : null);
-    self.bgcolor = (typeof props.color === 'string' ? props.color : self.getRandomRgb());
+  self.parent = (typeof props.parent !== 'undefined' ? props.parent : null);
 
-    self.alloc();
+  var __init = function () {
+    backgroundColor = (typeof props.color === 'string' ? props.color : getRandomRgb());
+
+    alloc();
 
     velocityScale = (typeof props.velocityScale !== 'undefined') ?
       props.velocityScale : {
@@ -22,24 +33,21 @@ function Particle(props) {
       props.dy :
       velocityScale.y * (Math.random() > 0.5 ? -1 : 1);
 
-
-    self.height = self.$el.clientHeight || 10;
-    self.width = self.$el.clientWidth || 10;
-
-    // console.log(self.parent.width, self.width);
-    var randomXY = self.getRandomXY();
+    var randomXY = getRandomXY();
 
     self.x = (typeof props.x === 'number' ? props.x : randomXY.x);
     self.y = (typeof props.y === 'number' ? props.y : randomXY.y);
 
     self.render();
-  }
+  };
 
-  self.alloc = function () {
+  var alloc = function () {
     // console.log('inside particle init');
     self.$el = document.createElement('div');
     self.$el.className = 'particle';
-    self.$el.style.backgroundColor = self.bgcolor;
+    self.$el.style.backgroundColor = backgroundColor;
+    self.$el.style.width = self.width + 'px';
+    self.$el.style.height = self.height + 'px';
     self.parent.$el.appendChild(self.$el);
   };
 
@@ -51,17 +59,21 @@ function Particle(props) {
   self.move = function () {
     self.x += self.dx;
     self.y += self.dy;
+
+    // console.group('self.dx self.dy');
+    // console.log(self.dx, self.dy);
+    // console.groupEnd();
   };
 
-  self.getRandomXY = function () {
+  var getRandomXY = function () {
     var pos = {};
     var maxCountOverLaps = 100;
     var countOverlaps = 0;
     var overlapsWithOtherParticles;
     do {
       pos = {
-        x: self.getRandomPositionX(),
-        y: self.getRandomPositionY(),
+        x: getRandomPositionX(),
+        y: getRandomPositionY(),
         height: self.height,
         width: self.width,
       };
@@ -73,24 +85,24 @@ function Particle(props) {
       }
     } while (overlapsWithOtherParticles && countOverlaps < maxCountOverLaps);
     return pos;
-  }
+  };
 
-  self.getRandomPositionX = function () {
-    var x = parseInt(Math.random() * (self.parent.width - self.width));
+  var getRandomPositionX = function () {
+    var x = parseInt(Math.random() * (self.parent.getWidth() - self.width));
     return x;
-  }
+  };
 
-  self.getRandomPositionY = function () {
-    var y = parseInt(Math.random() * (self.parent.height - self.height));
+  var getRandomPositionY = function () {
+    var y = parseInt(Math.random() * (self.parent.getHeight() - self.height));
     return y;
-  }
+  };
 
-  self.getRandomNumber = function (min, max) {
+  var getRandomNumber = function (min, max) {
     var rnd = parseInt(Math.random() * (max - min) + min);
     return rnd;
-  }
+  };
 
-  self.getRandomRgb = function () {
+  var getRandomRgb = function () {
     var maxScale = 190;
     var r = parseInt(Math.random() * maxScale);
     var g = parseInt(Math.random() * maxScale);
@@ -98,15 +110,15 @@ function Particle(props) {
     // var color = `rgb(${r}, ${g}, ${b}`;
     var color = 'rgb(' + r + ', ' + g + ', ' + b + ')';
     return color;
-  }
+  };
 
-  self.getRandomHsl = function () {
+  var getRandomHsl = function () {
     var h = parseInt(Math.random() * 360);
     var s = parseInt(Math.random() * 100) + '%';
     var l = parseInt(Math.random() * 70) + '%';
     var hsl = 'hsl(' + h + ', ' + s + ', ' + l + ')';
     return hsl;
-  }
+  };
 
   self.isOverlappedWith = function (particle) {
     var x1min = self.x;
@@ -119,8 +131,10 @@ function Particle(props) {
     var y2min = particle.y;
     var y2max = particle.y + particle.height;
 
-    // console.group('inside isOverLappedWith');
+    // console.group('inside self.isOverlappedWith');
     // console.log(self, particle);
+    // console.log(self.x, self.y, self.width, self.height);
+    // console.log(particle.x, particle.y, particle.width, particle.height);
     // console.groupEnd();
 
     if (x1max < x2min || x1min > x2max) {
@@ -130,29 +144,31 @@ function Particle(props) {
       return false;
     }
     return true;
-  }
+  };
 
   self.checkCollisionWithBoundary = function () {
     if (self.x < 0) {
       self.x = 0;
       self.dx = -self.dx;
     }
-    if (self.x + self.width > self.parent.width) {
-      self.x = self.parent.width - self.width;
+    if (self.x + self.width > self.parent.getWidth()) {
+      self.x = self.parent.getWidth() - self.width;
       self.dx = -self.dx;
     }
     if (self.y < 0) {
       self.y = 0;
       self.dy = -self.dy;
     }
-    if (self.y + self.height > self.parent.height) {
-      self.y = self.parent.height - self.height;
+    if (self.y + self.height > self.parent.getHeight()) {
+      self.y = self.parent.getHeight() - self.height;
       self.dy = -self.dy;
     }
-  }
+  };
 
   self.checkCollisionWith = function (particle) {
     if (self.isOverlappedWith(particle)) {
+      // console.log('collided');
+
       var tempDx = self.dx;
       self.dx = particle.dx;
       particle.dx = tempDx;
@@ -160,16 +176,8 @@ function Particle(props) {
       var tempDy = self.dy;
       self.dy = particle.dy;
       particle.dy = tempDy;
-
-      // var temp1 = self.dx;
-      // self.dx = self.dy;
-      // self.dy = -temp1;
-
-      // var temp2 = particle.dx;
-      // particle.dx = particle.dy;
-      // particle.dy = -temp2;
     }
-  }
+  };
 
-  self.__init();
+  __init();
 }

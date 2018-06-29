@@ -1,80 +1,108 @@
-  function ParticleContainer(props) {
-    var self = this;
-    self.particlesCount = (typeof props.particlesCount === 'number' ? props.particlesCount : 2);
-    self.$el = (typeof props.$el !== 'undefined' ? props.$el : null);
-    self.height = self.$el.clientHeight;
-    self.width = self.$el.clientWidth;
-    self.particles = [];
+/* jshint browser: true */
+"use strict";
 
-    self.__init = function () {
-      for (var i = 0; i < self.particlesCount; i++) {
-        var particle = new Particle({
-          parent: self,
-          velocityScale: {
-            x: 1,
-            y: 1,
-          },
-        });
-        // console.log(particle);
-        self.particles.push(particle);
+function ParticleContainer(props) {
+  var self = this;
+  var width = props.width || 400;
+  var height = props.height || 400;
+  var particles = [];
+  var particlesCount = (typeof props.particlesCount === 'number' ? props.particlesCount : 2);
 
-        particle.$el.addEventListener('mousedown', function (parent, particle) {
-          return function (e) {
-            // console.log(e);
-            parent.$el.removeChild(particle.$el);
-            var index = parent.particles.indexOf(particle);
-            if (index > -1) {
-              parent.particles.splice(index, 1);
-              parent.particlesCount = parent.particles.length;
-            }
-          };
-        }(self, particle));
-      }
-      // console.log(self.particles);
-    };
+  self.$el = null;
 
-    self.checkIfOverlapsWithOtherParticles = function (pos) {
-      // console.log('we are checking if it overlaps with other particles');
-      // console.group('inside checking collision')
-      var currentLoadedParticlesCount = self.particles.length;
-      for (var i = 0; i < currentLoadedParticlesCount; i++) {
-        // console.log(self.particles[i]);
-        // console.log(self.particles[i].isOverlappedWith(pos));
-        if (self.particles[i].isOverlappedWith(pos)) {
-          return true;
-        }
-      }
-      // console.log('Total overlaps: ', countOverlaps);
-      // console.groupEnd();
+  var __init = function () {
+    alloc();
 
-      return false;
-    }
-
-    self.checkCollisionWithAllParticles = function () {
-      self.particles.forEach(function (particle) {
-        particle.checkCollisionWithBoundary();
+    for (var i = 0; i < particlesCount; i++) {
+      var particle = new Particle({
+        parent: self,
+        velocityScale: {
+          x: 1,
+          y: 1,
+        },
       });
-    }
+      // console.log(particle);
+      particles.push(particle);
 
-    self.moveAllParticles = function () {
-      self.particles.forEach(function (particle) {
-        particle.move();
-      });
+      particle.$el.addEventListener('mousedown', function (particle) {
+        return function (e) {
+          // console.log(e);
+          self.$el.removeChild(particle.$el);
+          var index = particles.indexOf(particle);
+          if (index > -1) {
+            particles.splice(index, 1);
+            particlesCount--;
+          }
+        };
+      }(particle));
     }
+    // console.log(particles);
+  };
 
-    self.renderAllParticles = function () {
-      self.particles.forEach(function (particle) {
-        particle.render();
-      });
-    }
-
-    self.checkInterParticleCollision = function () {
-      for (var i = 0; i < self.particlesCount; i++) {
-        for (var j = i + 1; j < self.particlesCount; j++) {
-          self.particles[i].checkCollisionWith(self.particles[j]);
-        }
+  self.checkIfOverlapsWithOtherParticles = function (pos) {
+    // console.log('we are checking if it overlaps with other particles');
+    // console.group('inside checking collision')
+    var currentLoadedParticlesCount = particles.length;
+    for (var i = 0; i < currentLoadedParticlesCount; i++) {
+      // console.log(particles[i]);
+      // console.log(particles[i].isOverlappedWith(pos));
+      if (particles[i].isOverlappedWith(pos)) {
+        return true;
       }
     }
+    // console.log('Total overlaps: ', countOverlaps);
+    // console.groupEnd();
 
-    self.__init();
-  }
+    return false;
+  };
+
+  self.checkCollisionWithAllParticles = function () {
+    particles.forEach(function (particle) {
+      particle.checkCollisionWithBoundary();
+    });
+  };
+
+  self.moveAllParticles = function () {
+    particles.forEach(function (particle) {
+      particle.move();
+    });
+  };
+
+  self.renderAllParticles = function () {
+    particles.forEach(function (particle) {
+      particle.render();
+    });
+  };
+
+  self.checkInterParticleCollision = function () {
+    for (var i = 0; i < particlesCount; i++) {
+      for (var j = i + 1; j < particlesCount; j++) {
+        particles[i].checkCollisionWith(particles[j]);
+      }
+    }
+    // console.group('inside checkInterParticleCollision');
+    // console.log(particles);
+    // console.groupEnd();
+  };
+
+  var alloc = function () {
+    var $container = props.$container;
+    self.$el = document.createElement('div');
+    self.$el.style.left = props.x;
+    self.$el.style.top = props.y;
+    self.$el.style.width = width + 'px';
+    self.$el.style.height = height + 'px';
+    self.$el.className = 'frame-border';
+    $container.appendChild(self.$el);
+  };
+
+  self.getWidth = function () {
+    return width;
+  };
+
+  self.getHeight = function () {
+    return height;
+  };
+
+  __init();
+}
