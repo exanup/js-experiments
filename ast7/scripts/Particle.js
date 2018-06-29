@@ -5,6 +5,7 @@ function Particle(props) {
   var self = this;
   var velocityScale;
   var backgroundColor;
+  var antImageSrc = props.imgSrc || '../images/antwalk.gif';
   self.height = props.height || 40;
   self.width = props.width || 40;
   self.x = undefined;
@@ -45,15 +46,35 @@ function Particle(props) {
     // console.log('inside particle init');
     self.$el = document.createElement('div');
     self.$el.className = 'particle';
-    self.$el.style.backgroundColor = backgroundColor;
     self.$el.style.width = self.width + 'px';
     self.$el.style.height = self.height + 'px';
+    // self.$el.style.backgroundColor = backgroundColor;
     self.parent.$el.appendChild(self.$el);
+
+    var $img = document.createElement('img');
+    var imgW = 1.3 * self.width;
+    var imgH = 1.3 * self.height;
+    var imgX = parseInt( - Math.floor((imgW - self.width) / 2));
+    var imgY = parseInt( - Math.floor((imgH - self.height) / 2));
+    $img.src = antImageSrc;
+    $img.style.width = imgW + 'px';
+    $img.style.height = imgH + 'px';
+    $img.style.left = imgX + 'px';
+    $img.style.top = imgY + 'px';
+    self.$el.appendChild($img);
   };
 
   self.render = function () {
     self.$el.style.top = self.y + 'px';
     self.$el.style.left = self.x + 'px';
+
+    if (self.dx > 0) {
+      self.$el.style.transform = 'rotate(180deg)';
+    }
+
+    if (self.dx < 0) {
+      self.$el.style.transform = 'none';
+    }
   };
 
   self.move = function () {

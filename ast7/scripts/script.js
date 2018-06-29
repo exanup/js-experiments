@@ -3,14 +3,14 @@
 
 var $container = document.getElementById('container');
 
-var animationCount = 3;
+var animationCount = 1;
 var animations = [];
 for (var i = 0; i < animationCount; i++) {
   var animation = new Animation({
     delay: 20,
     particleContainer: {
       $container: $container,
-      particlesCount: 15,
+      particlesCount: 30,
       width: 800,
       height: 500,
     },

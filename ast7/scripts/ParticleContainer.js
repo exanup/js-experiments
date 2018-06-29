@@ -5,6 +5,7 @@ function ParticleContainer(props) {
   var self = this;
   var width = props.width || 400;
   var height = props.height || 400;
+  var backgroundImage = props.backgroundImage || '../images/background.jpg';
   var particles = [];
   var particlesCount = (typeof props.particlesCount === 'number' ? props.particlesCount : 2);
 
@@ -90,6 +91,7 @@ function ParticleContainer(props) {
     self.$el = document.createElement('div');
     self.$el.style.left = props.x;
     self.$el.style.top = props.y;
+    self.$el.style.backgroundImage = 'url("' + backgroundImage + '")';
     self.$el.style.width = width + 'px';
     self.$el.style.height = height + 'px';
     self.$el.className = 'frame-border';
