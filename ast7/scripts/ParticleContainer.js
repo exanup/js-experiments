@@ -12,7 +12,7 @@
           parent: self,
           velocityScale: {
             x: 1,
-            y: 1
+            y: 1,
           },
         });
         // console.log(particle);
