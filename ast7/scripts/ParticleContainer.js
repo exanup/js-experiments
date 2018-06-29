@@ -7,44 +7,28 @@ function ParticleContainer(props) {
   var height = props.height || 400;
   var backgroundImage = props.backgroundImage || './images/background.jpg';
   var particles = [];
-  var particlesCount = (typeof props.particlesCount === 'number' ? props.particlesCount : 2);
+  var initialParticlesCount = (typeof props.initialParticlesCount === 'number' ? props.initialParticlesCount : 2);
+  var particlesCount = 0;
 
   self.$el = null;
 
   var __init = function () {
     alloc();
-
-    for (var i = 0; i < particlesCount; i++) {
-      var particle = new Particle({
-        parent: self,
-        velocityScale: {
-          x: 1,
-          y: 1,
-        },
-      });
-      // console.log(particle);
-      particles.push(particle);
-
-      particle.$el.addEventListener('mousedown', function (particle) {
-        return function (e) {
-          // console.log(e);
-          self.$el.removeChild(particle.$el);
-          var index = particles.indexOf(particle);
-          if (index > -1) {
-            particles.splice(index, 1);
-            particlesCount--;
-          }
-        };
-      }(particle));
-    }
+    freshCreateParticles();
     // console.log(particles);
+  };
+
+  self.reSpawnIfNoneLeft = function () {
+    if (particlesCount <= 0) {
+      console.log('No particles remaining found! Re-spawning...')
+      freshCreateParticles();
+    }
   };
 
   self.checkIfOverlapsWithOtherParticles = function (pos) {
     // console.log('we are checking if it overlaps with other particles');
     // console.group('inside checking collision')
-    var currentLoadedParticlesCount = particles.length;
-    for (var i = 0; i < currentLoadedParticlesCount; i++) {
+    for (var i = 0; i < particlesCount; i++) {
       // console.log(particles[i]);
       // console.log(particles[i].isOverlappedWith(pos));
       if (particles[i].isOverlappedWith(pos)) {
@@ -76,7 +60,7 @@ function ParticleContainer(props) {
   };
 
   self.checkInterParticleCollision = function () {
-    for (var i = 0; i < particlesCount; i++) {
+    for (var i = 0; i < particlesCount - 1; i++) {
       for (var j = i + 1; j < particlesCount; j++) {
         particles[i].checkCollisionWith(particles[j]);
       }
@@ -104,6 +88,33 @@ function ParticleContainer(props) {
 
   self.getHeight = function () {
     return height;
+  };
+
+
+  var freshCreateParticles = function () {
+    for (var i = 0; i < initialParticlesCount; i++) {
+      var particle = new Particle({
+        parent: self,
+        velocityScale: {
+          x: 1,
+          y: 1,
+        },
+      });
+      // console.log(particle);
+      particles.push(particle);
+      particlesCount++;
+      particle.$el.addEventListener('mousedown', function (particle) {
+        return function (e) {
+          // console.log(e);
+          self.$el.removeChild(particle.$el);
+          var index = particles.indexOf(particle);
+          if (index > -1) {
+            particles.splice(index, 1);
+            particlesCount--;
+          }
+        };
+      }(particle));
+    }
   };
 
   __init();
