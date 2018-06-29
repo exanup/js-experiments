@@ -1,5 +1,6 @@
 function Particle(props) {
   var self = this;
+  var velocityScale = null;
 
   self.__init = function () {
     self.parent = (typeof props.parent !== 'undefined' ? props.parent : null);
@@ -7,7 +8,7 @@ function Particle(props) {
 
     self.alloc();
 
-    var velocityScale = (typeof props.velocityScale !== 'undefined') ?
+    velocityScale = (typeof props.velocityScale !== 'undefined') ?
       props.velocityScale : {
         x: 1,
         y: 1
@@ -134,19 +135,19 @@ function Particle(props) {
   self.checkCollisionWithBoundary = function () {
     if (self.x < 0) {
       self.x = 0;
-      self.dx = 1;
+      self.dx = -self.dx;
     }
     if (self.x + self.width > self.parent.width) {
       self.x = self.parent.width - self.width;
-      self.dx = -1;
+      self.dx = -self.dx;
     }
     if (self.y < 0) {
       self.y = 0;
-      self.dy = 1;
+      self.dy = -self.dy;
     }
     if (self.y + self.height > self.parent.height) {
       self.y = self.parent.height - self.height;
-      self.dy = -1;
+      self.dy = -self.dy;
     }
   }
 
