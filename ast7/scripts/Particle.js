@@ -63,7 +63,7 @@ function Particle(props) {
         height: self.height,
         width: self.width,
       };
-      overlapsWithOtherParticles = self.parent.checkIfOverlapsWithOtherParticles(pos);
+      var overlapsWithOtherParticles = self.parent.checkIfOverlapsWithOtherParticles(pos);
 
       countOverlaps++;
       if (countOverlaps >= maxCountOverLaps) {
