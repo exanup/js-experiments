@@ -18,7 +18,7 @@
         // console.log(particle);
         self.particles.push(particle);
 
-        particle.$el.addEventListener('click', function (parent, particle) {
+        particle.$el.addEventListener('mousedown', function (parent, particle) {
           return function (e) {
             // console.log(e);
             parent.$el.removeChild(particle.$el);
