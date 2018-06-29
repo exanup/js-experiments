@@ -5,7 +5,7 @@ function ParticleContainer(props) {
   var self = this;
   var width = props.width || 400;
   var height = props.height || 400;
-  var backgroundImage = props.backgroundImage || '../images/background.jpg';
+  var backgroundImage = props.backgroundImage || './images/background.jpg';
   var particles = [];
   var particlesCount = (typeof props.particlesCount === 'number' ? props.particlesCount : 2);
 
