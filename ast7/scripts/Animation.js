@@ -17,10 +17,11 @@ function Animation(props) {
       console.log('Starting animation...');
       isRunning = true;
       mainLoopRef = setInterval(function () {
-        particleContainer.moveAllParticles();
+        particleContainer.reSpawnIfNoneLeft();
         particleContainer.checkCollisionWithAllParticles();
-        particleContainer.renderAllParticles();
         particleContainer.checkInterParticleCollision();
+        particleContainer.moveAllParticles();
+        particleContainer.renderAllParticles();
       }, delay);
     }
 
