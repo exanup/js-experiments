@@ -5,7 +5,7 @@ function Particle(props) {
   var self = this;
   var velocityScale;
   var backgroundColor;
-  var antImageSrc = props.imgSrc || '../images/antwalk.gif';
+  var antImageSrc = props.imgSrc || './images/antwalk.gif';
   self.height = props.height || 40;
   self.width = props.width || 40;
   self.x = undefined;
