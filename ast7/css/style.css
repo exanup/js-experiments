@@ -17,20 +17,21 @@ body {
 }
 
 .container {
-  border: 5px solid lightcoral;
-  border-radius: 10px;
+  width: 100%;
+}
+
+.frame-border {
   position: relative;
-  width: 1000px;
-  height: 500px;
-  margin: 0 auto;
+  border: 5px solid lightcoral;
   background: white;
+  margin: 0 auto;
+  margin-bottom: 10px;
+  border-radius: 10px;
 }
 
 .particle {
   /* outline: 1px dotted red; */
   border-radius: 50%;
   position: absolute;
-  height: 35px;
-  width: 35px;
   cursor: pointer;
 }

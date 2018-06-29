@@ -1,19 +1,34 @@
-$container = document.getElementById('container');
+/* jshint browser: true */
+"use strict";
 
-var animation = new Animation({
-  delay: 10,
-  particleContainer: {
-    $el: $container,
-    particlesCount: 20,
-  },
-});
-animation.start();
+var $container = document.getElementById('container');
 
-document.addEventListener('keydown', function(e) {
+var animationCount = 3;
+var animations = [];
+for (var i = 0; i < animationCount; i++) {
+  var animation = new Animation({
+    delay: 20,
+    particleContainer: {
+      $container: $container,
+      particlesCount: 15,
+      width: 800,
+      height: 500,
+    },
+  });
+
+  animation.start();
+  animations.push(animation);
+}
+
+document.addEventListener('keydown', function (e) {
   if (e.key === 'Escape') {
-    animation.pause();
+    for (var j = 0; j < animationCount; j++) {
+      animations[j].pause();
+    }
   }
   if (e.key === 'R' || e.key === 'r') {
-    animation.resume();
+    for (var k = 0; k < animationCount; k++) {
+      animations[k].resume();
+    }
   }
 });
