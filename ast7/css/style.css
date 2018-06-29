@@ -22,7 +22,7 @@ body {
 
 .frame-border {
   position: relative;
-  border: 5px solid lightcoral;
+  /* border: 5px solid lightcoral; */
   background: white;
   margin: 0 auto;
   margin-bottom: 10px;
@@ -30,8 +30,16 @@ body {
 }
 
 .particle {
-  /* outline: 1px dotted red; */
-  border-radius: 50%;
   position: absolute;
+  /* border-radius: 50%; */
+  /* border: 1px dotted red; */
   cursor: pointer;
+}
+
+.particle img {
+  position: absolute;
+  /* border: 1px dotted blue;  */
+  cursor: pointer;
+  top: -11px;
+  left: -11px;
 }
