@@ -54,8 +54,9 @@ function Particle(props) {
 
   self.getRandomXY = function () {
     var pos = {};
-    var maxCountOverLaps = 100;;
+    var maxCountOverLaps = 100;
     var countOverlaps = 0;
+    var overlapsWithOtherParticles;
     do {
       pos = {
         x: self.getRandomPositionX(),
@@ -63,7 +64,7 @@ function Particle(props) {
         height: self.height,
         width: self.width,
       };
-      var overlapsWithOtherParticles = self.parent.checkIfOverlapsWithOtherParticles(pos);
+      overlapsWithOtherParticles = self.parent.checkIfOverlapsWithOtherParticles(pos);
 
       countOverlaps++;
       if (countOverlaps >= maxCountOverLaps) {
