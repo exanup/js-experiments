@@ -7,8 +7,20 @@ function Particle(props) {
 
     self.alloc();
 
-    self.dx = (typeof props.dx === 'number' ? props.dx : (Math.random() > 0.5 ? -1 : 1));
-    self.dy = (typeof props.dy === 'number' ? props.dy : (Math.random() > 0.5 ? -1 : 1));
+    var velocityScale = (typeof props.velocityScale !== 'undefined') ?
+      props.velocityScale : {
+        x: 1,
+        y: 1
+      };
+
+    self.dx = (typeof props.dx === 'number') ?
+      props.dx :
+      velocityScale.x * (Math.random() > 0.5 ? -1 : 1);
+
+    self.dy = (typeof props.dy === 'number') ?
+      props.dy :
+      velocityScale.y * (Math.random() > 0.5 ? -1 : 1);
+
 
     self.height = self.$el.clientHeight || 10;
     self.width = self.$el.clientWidth || 10;
@@ -28,17 +40,17 @@ function Particle(props) {
     self.$el.className = 'particle';
     self.$el.style.backgroundColor = self.bgcolor;
     self.parent.$el.appendChild(self.$el);
-  }
+  };
 
   self.render = function () {
     self.$el.style.top = self.y + 'px';
     self.$el.style.left = self.x + 'px';
-  }
+  };
 
   self.move = function () {
     self.x += self.dx;
     self.y += self.dy;
-  }
+  };
 
   self.getRandomXY = function () {
     var pos = {};
@@ -51,7 +63,7 @@ function Particle(props) {
         height: self.height,
         width: self.width,
       };
-      overlapsWithOtherParticles = self.parent.checkIfOverlapsWithOtherParticles(pos);
+      var overlapsWithOtherParticles = self.parent.checkIfOverlapsWithOtherParticles(pos);
 
       countOverlaps++;
       if (countOverlaps >= maxCountOverLaps) {
@@ -115,7 +127,6 @@ function Particle(props) {
     if (y1max < y2min || y1min > y2max) {
       return false;
     }
-
     return true;
   }
 
@@ -148,14 +159,14 @@ function Particle(props) {
       self.dy = particle.dy;
       particle.dy = tempDy;
 
-      // particle.x = self.x - self.width - 1;
-      // particle.x = self.y - self.height - 1;
+      // var temp1 = self.dx;
+      // self.dx = self.dy;
+      // self.dy = -temp1;
+
+      // var temp2 = particle.dx;
+      // particle.dx = particle.dy;
+      // particle.dy = -temp2;
     }
-
-    // if ((x1max >= x2min && x1min <= x2max) && (y1max >= y2min && y1min <= y2max)) {
-    //   return true;
-    // }
-
   }
 
   self.__init();

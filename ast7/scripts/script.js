@@ -1,13 +1,12 @@
 $container = document.getElementById('container');
 
 var animation = new Animation({
-  delay: 1,
+  delay: 20,
   particleContainer: {
     $el: $container,
-    particlesCount: 150,
+    particlesCount: 100,
   },
 });
-
 animation.start();
 
 document.addEventListener('keydown', function(e) {
