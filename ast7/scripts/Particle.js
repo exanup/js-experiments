@@ -3,16 +3,9 @@
 
 function Particle(props) {
   var self = this;
-  var C = {
-    TOP: 1,
-    RIGHT: 2,
-    BOTTOM: 3,
-    LEFT: 4
-  };
   var velocityScale;
   var backgroundColor;
   var antImageSrc = props.imgSrc || './images/antwalk.gif';
-  self.facing = C.LEFT;
   self.height = props.height || 40;
   self.width = props.width || 40;
   self.x = undefined;
@@ -29,25 +22,28 @@ function Particle(props) {
     alloc();
 
     velocityScale = (typeof props.velocityScale !== 'undefined') ?
-    props.velocityScale : {
-      x: 1,
-      y: 1
-    };
+      props.velocityScale : {
+        x: 1,
+        y: 1
+      };
 
-    self.dx = (typeof props.dx === 'number') ?
-    props.dx :
-    velocityScale.x * (Math.random() > 0.5 ? -1 : 1);
+    var initDx = 0;
+    var initDy = 0;
+    while (initDx === 0 && initDy === 0) { // don't let any ant have (dx, dy) = (0, 0);
+      initDx = Particle.getRandomNumber(-1, 1);
+      initDy = Particle.getRandomNumber(-1, 1);
+    }
+    // console.log(initDx, initDy);
 
-    self.dy = (typeof props.dy === 'number') ?
-    props.dy :
-    velocityScale.y * (Math.random() > 0.5 ? -1 : 1);
+    self.dx = (typeof props.dx === 'number') ? props.dx : velocityScale.x * initDx;
+    self.dy = (typeof props.dy === 'number') ? props.dy : velocityScale.y * initDy;
+    // console.log(self.dx, self.dy);
 
     var randomXY = getRandomXY();
 
     self.x = (typeof props.x === 'number' ? props.x : randomXY.x);
     self.y = (typeof props.y === 'number' ? props.y : randomXY.y);
 
-    self.orientFace();
     self.render();
   };
 
@@ -77,22 +73,13 @@ function Particle(props) {
     self.$el.style.top = self.y + 'px';
     self.$el.style.left = self.x + 'px';
 
-    // console.log(self.getFace());
+    var deg = findDegreeOfRotation();
+    self.$el.style.transform = 'rotate(' + deg + 'deg)';
+  };
 
-    switch (self.facing) {
-      case C.TOP:
-        self.$el.style.transform = 'rotate(90deg)';
-        break;
-      case C.RIGHT:
-        self.$el.style.transform = 'rotate(180deg)';
-        break;
-      case C.BOTTOM:
-        self.$el.style.transform = 'rotate(270deg)';
-        break;
-      case C.LEFT:
-        self.$el.style.transform = 'none';
-        break;
-    }
+  var findDegreeOfRotation = function () {
+    var deg = Math.atan2(self.dy, self.dx) * 180 / Math.PI;
+    return deg;
   };
 
   self.move = function () {
@@ -135,11 +122,6 @@ function Particle(props) {
     return y;
   };
 
-  var getRandomNumber = function (min, max) {
-    var rnd = parseInt(Math.random() * (max - min) + min);
-    return rnd;
-  };
-
   var getRandomRgb = function () {
     var maxScale = 190;
     var r = parseInt(Math.random() * maxScale);
@@ -179,32 +161,27 @@ function Particle(props) {
   };
 
   self.checkCollisionWithBoundary = function () {
-    var collided = false;
+    // var collided = false;
     if (self.x < 0) {
       self.x = 0;
       self.dx = -self.dx;
-      collided = true;
+      // collided = true;
     }
     if (self.x + self.width > self.parent.getWidth()) {
       self.x = self.parent.getWidth() - self.width;
       self.dx = -self.dx;
-      collided = true;
+      // collided = true;
     }
     if (self.y < 0) {
       self.y = 0;
       self.dy = -self.dy;
-      collided = true;
+      // collided = true;
     }
     if (self.y + self.height > self.parent.getHeight()) {
       self.y = self.parent.getHeight() - self.height;
       self.dy = -self.dy;
-      collided = true;
+      // collided = true;
     }
-    if (collided) {
-      // console.log(self.getFace());
-      self.orientFace();
-    }
-
   };
 
   self.checkCollisionWith = function (particle) {
@@ -217,44 +194,13 @@ function Particle(props) {
       var tempDy = self.dy;
       self.dy = particle.dy;
       particle.dy = tempDy;
-
-      self.orientFace();
-      particle.orientFace();
-    }
-  };
-
-
-  self.orientFace = function () {
-    // the original sprite is facing left i.e. at the direction of -dx
-    if (self.dx < 0) { // facing left
-      self.facing = C.LEFT;
-    }
-    if (self.dx > 0) { // facing right
-      self.facing = C.RIGHT;
-    }
-    // only try to switch ant's face to y direction half of the times
-    if (Math.random() > 0.5) {
-      if (self.dy < 0) { // facing up
-        self.facing = C.TOP;
-      }
-      if (self.dy > 0) { // facing down
-        self.facing = C.BOTTOM;
-      }
-    }
-  };
-
-  self.getFace = function() {
-    switch (self.facing) {
-      case C.LEFT:
-        return 'facing left';
-      case C.RIGHT:
-        return 'facing right';
-      case C.TOP:
-        return 'facing top';
-      case C.BOTTOM:
-        return 'facing bottom';
     }
   };
 
   __init();
 }
+
+Particle.getRandomNumber = function (min, max) {
+  var rnd = parseInt(Math.random() * (max - min + 1)) + min;
+  return rnd;
+};
