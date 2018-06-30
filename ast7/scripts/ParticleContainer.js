@@ -20,7 +20,7 @@ function ParticleContainer(props) {
 
   self.reSpawnIfNoneLeft = function () {
     if (particlesCount <= 0) {
-      console.log('No particles remaining found! Re-spawning...')
+      console.log('No particles remaining found! Re-spawning...');
       freshCreateParticles();
     }
   };
