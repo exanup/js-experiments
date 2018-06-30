@@ -93,14 +93,16 @@ function ParticleContainer(props) {
 
   var freshCreateParticles = function () {
     for (var i = 0; i < initialParticlesCount; i++) {
-      var particle = new Particle({
+      var props = {
         parent: self,
         velocityScale: {
-          x: 1,
-          y: 1,
+          x: Particle.getRandomNumber(1, 3),
+          y: Particle.getRandomNumber(1, 3),
         },
-      });
-      // console.log(particle);
+      };
+      console.log(props.velocityScale);
+
+      var particle = new Particle(props);
       particles.push(particle);
       particlesCount++;
       particle.$el.addEventListener('mousedown', function (particle) {
