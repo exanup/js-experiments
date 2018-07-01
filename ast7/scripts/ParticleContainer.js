@@ -100,7 +100,7 @@ function ParticleContainer(props) {
           y: Particle.getRandomNumber(1, 3),
         },
       };
-      console.log(props.velocityScale);
+      // console.log(props.velocityScale);
 
       var particle = new Particle(props);
       particles.push(particle);

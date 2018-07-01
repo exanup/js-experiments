@@ -7,7 +7,7 @@ var animationCount = 1;
 var animations = [];
 for (var i = 0; i < animationCount; i++) {
   var animation = new Animation({
-    delay: 20,
+    delay: 15,
     particleContainer: {
       $container: $container,
       initialParticlesCount: 20,
