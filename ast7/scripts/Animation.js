@@ -16,20 +16,22 @@ function Animation(props) {
     if (!isRunning) {
       console.log('Starting animation...');
       isRunning = true;
-      mainLoopRef = setInterval(function () {
-        particleContainer.reSpawnIfNoneLeft();
-        particleContainer.checkCollisionWithAllParticles();
-        particleContainer.checkInterParticleCollision();
-        particleContainer.moveAllParticles();
-        particleContainer.renderAllParticles();
-      }, delay);
+      self.draw();
     }
+  };
 
+  self.draw = function () {
+    particleContainer.reSpawnIfNoneLeft();
+    particleContainer.checkCollisionWithAllParticles();
+    particleContainer.checkInterParticleCollision();
+    particleContainer.moveAllParticles();
+    particleContainer.renderAllParticles();
+    mainLoopRef = requestAnimationFrame(self.draw);
   };
 
   self.pause = function () {
     if (isRunning) {
-      clearInterval(mainLoopRef);
+      cancelAnimationFrame(mainLoopRef);
       isRunning = false;
       console.log('Paused!');
     }
