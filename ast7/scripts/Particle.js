@@ -6,8 +6,8 @@ function Particle(props) {
   var velocityScale;
   var backgroundColor;
   var antImageSrc = props.imgSrc || './images/antwalk.gif';
-  self.height = props.height || 40;
-  self.width = props.width || 40;
+  self.height = props.height || 30;
+  self.width = props.width || 30;
   self.x = undefined;
   self.y = undefined;
   self.dx = undefined;
@@ -17,7 +17,7 @@ function Particle(props) {
 
   var __init = function () {
 
-    backgroundColor = (typeof props.color === 'string' ? props.color : getRandomRgb());
+    // backgroundColor = (typeof props.color === 'string' ? props.color : getRandomRgb());
 
     alloc();
 
@@ -53,7 +53,7 @@ function Particle(props) {
     self.$el.className = 'particle';
     self.$el.style.width = self.width + 'px';
     self.$el.style.height = self.height + 'px';
-    // self.$el.style.backgroundColor = backgroundColor;
+    self.$el.style.backgroundColor = backgroundColor;
     self.parent.$el.appendChild(self.$el);
 
     var $img = document.createElement('img');

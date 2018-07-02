@@ -10,9 +10,9 @@ for (var i = 0; i < animationCount; i++) {
     delay: 15,
     particleContainer: {
       $container: $container,
-      initialParticlesCount: 20,
-      width: 800,
-      height: 500,
+      initialParticlesCount: 50,
+      width: 1300,
+      height: 540,
     },
   });
 
