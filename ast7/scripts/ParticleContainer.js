@@ -96,8 +96,8 @@ function ParticleContainer(props) {
       var props = {
         parent: self,
         velocityScale: {
-          x: Particle.getRandomNumber(1, 3),
-          y: Particle.getRandomNumber(1, 3),
+          x: Particle.getRandomNumber(1, 4),
+          y: Particle.getRandomNumber(1, 4),
         },
       };
       // console.log(props.velocityScale);
