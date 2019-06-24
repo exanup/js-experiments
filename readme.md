@@ -12,3 +12,5 @@ GitHub Pages - [https://exanup.github.io/js-experiments/](https://exanup.github.
 [ast5](https://exanup.github.io/js-experiments/ast5/)
 [ast6](https://exanup.github.io/js-experiments/ast6/)
 [ast7](https://exanup.github.io/js-experiments/ast7/)
+
+[bonus1 - Advanced vanilla JS Slider implemented using Event Sourcing Architecture and Functional Programming with Partial Application and Composition](https://exanup.github.io/js-experiments/bonus1/)
